@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --bg-color: #f8fafc;
+    --text-color: #1e293b;
+    --muted-color: #64748b;
+    --border-color: #e2e8f0;
+    --accent-color: #3b82f6;
+    --card-bg: #ffffff;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: transparent;
+    color: var(--text-color);
+    margin: 0;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .schedule-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px 24px;
+    max-width: 540px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 2px dashed #cbd5e1;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted-color);
+  }
+
+  .progress-container {
+    margin-top: 14px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    transition: width 0.3s ease;
+  }
+
+  .progress-text {
+    font-size: 12px;
+    color: var(--muted-color);
+    text-align: right;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2563eb;
+    margin: 16px 0 10px 0;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .item:hover {
+    border-color: #93c5fd;
+    background: #f8fafc;
+  }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #cbd5e1;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .item.checked .checkbox {
+    background: #10b981;
+    border-color: #10b981;
+  }
+
+  .checkbox::after {
+    content: "✓";
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    display: none;
+  }
+
+  .item.checked .checkbox::after {
+    display: block;
+  }
+
+  .time {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    width: 95px;
+    flex-shrink: 0;
+  }
+
+  .content {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #334155;
+    flex-grow: 1;
+    transition: color 0.2s;
+  }
+
+  .item.checked .content {
+    text-decoration: line-through;
+    color: #94a3b8;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .tag.fit { background: #ecfdf5; color: #059669; }
+  .tag.game { background: #f5f3ff; color: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="schedule-card">
+  <div class="header">
+    <div class="title">✨ 贺驰每日作息打卡表</div>
+    <div class="subtitle">规律作息 · 快乐工作 · 高质量陪伴</div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">完成进度: 0 / 10 (0%)</div>
+  </div>
+
+  <div class="section-title">🌅 晨间时光</div>
+  <div class="item-list">
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">06:50 - 07:30</span><span class="content">⏰ 起床 & 准备</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">07:30 - 08:10</span><span class="content">🎒 送安安出门上学 (8:10到家)</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">08:10 - 09:10</span><span class="content">🏠 40min室内超慢跑+洗漱 / 补觉</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">09:10 - 09:30</span><span class="content">🚗 通勤出门上班</span></div>
+  </div>
+
+  <div class="section-title">☀️ 午间与工作</div>
+  <div class="item-list">
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">09:30 - 11:30</span><span class="content">💻 上午专注工作</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">11:30 - 14:00</span><span class="content">🏋️ 健身房 (周1 3 5) / 🎮 游戏 (周2 4)</span><span class="tag fit">充能</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">14:00 - 18:00</span><span class="content">💻 下午高效工作</span></div>
+  </div>
+
+  <div class="section-title">🌙 晚间亲子与休整</div>
+  <div class="item-list">
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">18:00</span><span class="content">🍚 记得吃晚饭</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">19:30 - 20:30</span><span class="content">🚌 下班回家</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">20:30 - 21:30</span><span class="content">📚 陪安安互动 / 做作业</span><span class="tag">亲子</span></div>
+    <div class="item" onclick="toggle(this)"><div class="checkbox"></div><span class="time">21:30 - 22:30</span><span class="content">☕ 自由时间 & 洗漱准备睡觉</span><span class="tag game">休息</span></div>
+  </div>
+</div>
+
+<script>
+  // 页面加载时自动恢复历史打卡状态
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedState = JSON.parse(localStorage.getItem('hechi_schedule_state') || '[]');
+    const items = document.querySelectorAll('.item');
+    items.forEach((item, index) => {
+      if (savedState.includes(index)) {
+        item.classList.add('checked');
+      }
+    });
+    updateProgress();
+  });
+
+  // 点击打卡
+  function toggle(el) {
+    el.classList.toggle('checked');
+    saveState();
+    updateProgress();
+  }
+
+  // 将打卡状态持久化保存到本地浏览器缓存
+  function saveState() {
+    const items = document.querySelectorAll('.item');
+    const checkedIndices = [];
+    items.forEach((item, index) => {
+      if (item.classList.contains('checked')) {
+        checkedIndices.push(index);
+      }
+    });
+    localStorage.setItem('hechi_schedule_state', JSON.stringify(checkedIndices));
+  }
+
+  // 更新进度条
+  function updateProgress() {
+    const items = document.querySelectorAll('.item');
+    const checked = document.querySelectorAll('.item.checked');
+    const total = items.length;
+    const count = checked.length;
+    const percent = Math.round((count / total) * 100);
+
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('progressText').innerText = `完成进度: ${count} / ${total} (${percent}%)`;
+  }
+</script>
+
+</body>
+</html>
